@@ -324,8 +324,7 @@ mcu_spi mcu (
 // joystick can either be driven from the external MCU or via FPGA IO pins
 wire [5:0] hid_mouse;   // USB/HID mouse with four directions and two buttons
 wire [7:0] hid_joy;     // USB/HID joystick with four directions and four buttons
-
-wire [7:0] hid_joy_2;     // USB/HID joystick with four directions and four buttons
+wire [7:0] hid_joy2;     // USB/HID joystick with four directions and four buttons
 
 // external DB9 joystick port
 wire [5:0] db9_atari = { !io[5], !io[0], !io[2], !io[1], !io[4], !io[3] };
@@ -346,8 +345,7 @@ wire [5:0] joy0 = (system_port_mouse == 2'd0)?hid_mouse:
 // DB9 is used for joystick, whenever the mouse is mapped to USB
 wire [5:0] db9_joy = (system_port_mouse==2'd0)?db9_atari: 6'b000000;
 wire [4:0] joy1 = hid_joy[4:0] | db9_joy[4:0];
-
-wire [4:0] joy0 = hid_joy_2[4:0] | db9_joy_2[4:0];
+wire [4:0] joy0 = hid_joy2[4:0] | db9_joy2[4:0];
 
 // The keyboard matrix is maintained inside HID
 wire [7:0] keyboard[14:0];
