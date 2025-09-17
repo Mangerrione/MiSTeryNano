@@ -67,6 +67,9 @@ module misterynano (
   // generic IO, used for mouse/joystick/...
   input [7:0]	io,
 
+  // spare IO, used for 2nd joystick
+  input [7:0]	spare,
+
   // the parallel port of the ST only carries few signals
   output		parallel_strobe_oe,
   input			parallel_strobe_in, 
@@ -322,9 +325,15 @@ mcu_spi mcu (
 wire [5:0] hid_mouse;   // USB/HID mouse with four directions and two buttons
 wire [7:0] hid_joy;     // USB/HID joystick with four directions and four buttons
 
+wire [7:0] hid_joy_2;     // USB/HID joystick with four directions and four buttons
+
 // external DB9 joystick port
 wire [5:0] db9_atari = { !io[5], !io[0], !io[2], !io[1], !io[4], !io[3] };
 wire [5:0] db9_amiga = { !io[5], !io[0], !io[3], !io[1], !io[4], !io[2] };
+
+// external DB9 joystick port 2
+wire [5:0] db9_atari_2 = { !spare[5], !spare[0], !spare[2], !spare[1], !spare[4], !spare[3] };
+wire [5:0] db9_amiga_2 = { !spare[5], !spare[0], !spare[3], !spare[1], !spare[4], !spare[2] };
 
 // any db9 mouse replaces usb mouse as mice will keep some signals
 // permanently active and can thus not just be wired together
@@ -337,6 +346,8 @@ wire [5:0] joy0 = (system_port_mouse == 2'd0)?hid_mouse:
 // DB9 is used for joystick, whenever the mouse is mapped to USB
 wire [5:0] db9_joy = (system_port_mouse==2'd0)?db9_atari: 6'b000000;
 wire [4:0] joy1 = hid_joy[4:0] | db9_joy[4:0];
+
+wire [4:0] joy0 = hid_joy_2[4:0] | db9_joy_2[4:0];
 
 // The keyboard matrix is maintained inside HID
 wire [7:0] keyboard[14:0];

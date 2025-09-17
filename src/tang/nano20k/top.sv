@@ -46,6 +46,9 @@ module top(
   // generic IO, used for mouse/joystick/...
   input [7:0]	io,
 
+  // spare IO, used for 2nd joystick
+  input [7:0]	spare,
+
   // interface to external BL616/M0S
   inout [4:0]	m0s,
 
@@ -173,6 +176,9 @@ misterynano misterynano (
   // generic IO, used for mouse/joystick/...
   .io ( io ),
 
+  // spare IO, used for 2nd joystick
+  .spare ( spare ),
+  
   // mcu interface
   .mcu_sclk ( spi_io_clk  ),
   .mcu_csn  ( spi_io_ss   ),
