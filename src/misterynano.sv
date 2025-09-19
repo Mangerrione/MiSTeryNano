@@ -318,32 +318,35 @@ mcu_spi mcu (
         .mcu_sdc_din(sdc_data_out)
         );
         
-// ---- Mix HID mouse/joystick and DB9 joystick -----
+// ---- Mix HID mouse/joystick and DB9 joysticks -----
 
 // joy0 is usually used for the mouse, joy1 for the joystick. The
-// joystick can either be driven from the external MCU or via FPGA IO pins
+// joysticks can either be driven from the external MCU or via FPGA IO and SPARE pins
 wire [5:0] hid_mouse;   // USB/HID mouse with four directions and two buttons
 wire [7:0] hid_joy0;     // USB/HID joystick with four directions and four buttons
 wire [7:0] hid_joy1;     // USB/HID joystick with four directions and four buttons
 
-// external DB9 joystick port
+// external DB9 joystick port 1
 wire [5:0] db9_atari = { !io[5], !io[0], !io[2], !io[1], !io[4], !io[3] };
-wire [5:0] db9_amiga = { !io[5], !io[0], !io[3], !io[1], !io[4], !io[2] };
+wire [5:0] db9_amiga_mouse = { !io[5], !io[0], !io[3], !io[1], !io[4], !io[2] };
 
 // external DB9 joystick port 2
-wire [5:0] db9_port_2 = { !spare[5], !spare[0], !spare[3], !spare[1], !spare[4], !spare[2] };
+wire [5:0] db9_joy2 = { !spare[5], !spare[0], !spare[2], !spare[1], !spare[4], !spare[3] };
 
 // any db9 mouse replaces usb mouse as mice will keep some signals
 // permanently active and can thus not just be wired together
-wire [5:0] joy0 = hid_joy0 | ((system_port_mouse == 2'd0)?hid_mouse:
-                            (system_port_mouse == 2'd1)?db9_atari:
-                            (system_port_mouse == 2'd2)?db9_amiga:
-                            6'b000000);
+wire [5:0] joy0 = hid_joy0[5:0] | db9_joy1[5:0] | ((system_port_mouse == 2'd0)?hid_mouse:
+                                            (system_port_mouse == 2'd1)?db9_atari:
+                                            (system_port_mouse == 2'd2)?db9_amiga_mouse:
+                                            6'b000000);
 
 // Joystick ports are just wired together and can be used in parallel
 // DB9 is used for joystick, whenever the mouse is mapped to USB
-wire [5:0] db9_joy = (system_port_mouse==2'd0)?db9_atari: 6'b000000;
-wire [4:0] joy1 = hid_joy1[4:0] | db9_joy[4:0] | db9_port_2[4:0];
+wire [5:0] db9_joy1 = (system_port_mouse==2'd0)?db9_atari: 6'b000000;
+
+// Joyst Swap will occur here
+// wire [4:0] joy0 = hid_joy0[4:0] | db9_joy1[4:0];
+wire [5:0] joy1 = hid_joy1[5:0] | db9_joy2[5:0];
 
 // The keyboard matrix is maintained inside HID
 wire [7:0] keyboard[14:0];
@@ -384,14 +387,14 @@ hid hid (
 
         // input local db9 port events to be sent to MCU. Changes also trigger
         // an interrupt, so the MCU doesn't have to poll for joystick events
-        .db9_port( db9_joy ),
+        .db9_port( db9_joy1 ),
         .irq( hid_int ),
         .iack( hid_iack ),
 
         .mouse(hid_mouse),
         .keyboard(keyboard),
-        .joystick0(hid_joy1),
-        .joystick1(hid_joy0)
+        .joystick0(hid_joy0),
+        .joystick1(hid_joy1)
          );   
          
 wire sdc_int;

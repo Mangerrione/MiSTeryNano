@@ -67,31 +67,31 @@ IO_LOC "sd_dat[3]" 81;
 IO_PORT "sd_dat[3]" PULL_MODE=NONE IO_TYPE=LVCMOS33;
 
 // generic IO pins to use for e.g. db9 mouse or joystick
-IO_LOC "io[0]" 27;
+IO_LOC "io[0]" 27;                                  // BTN1
 IO_PORT "io[0]" PULL_MODE=UP IO_TYPE=LVCMOS33;
-IO_LOC "io[1]" 28;
+IO_LOC "io[1]" 28;                                  // DOWN
 IO_PORT "io[1]" PULL_MODE=UP IO_TYPE=LVCMOS33;
-IO_LOC "io[2]" 25;
+IO_LOC "io[2]" 25;                                  // UP
 IO_PORT "io[2]" PULL_MODE=UP IO_TYPE=LVCMOS33;
-IO_LOC "io[3]" 26;
+IO_LOC "io[3]" 26;                                  // RIGHT
 IO_PORT "io[3]" PULL_MODE=UP IO_TYPE=LVCMOS33;
-IO_LOC "io[4]" 29;
+IO_LOC "io[4]" 29;                                  // LEFT
 IO_PORT "io[4]" PULL_MODE=UP IO_TYPE=LVCMOS33;
-IO_LOC "io[5]" 30;
+IO_LOC "io[5]" 30;                                  // BTN2
 IO_PORT "io[5]" PULL_MODE=UP IO_TYPE=LVCMOS33;
 
 // spare IO pins used for 2nd DB9 port
-IO_LOC "spare[0]" 73;
+IO_LOC "spare[0]" 73;                               // BTN1
 IO_PORT "spare[0]" PULL_MODE=UP IO_TYPE=LVCMOS33;
-IO_LOC "spare[1]" 74;
+IO_LOC "spare[1]" 74;                               // DOWN
 IO_PORT "spare[1]" PULL_MODE=UP IO_TYPE=LVCMOS33;
-IO_LOC "spare[2]" 77;
+IO_LOC "spare[2]" 77;                               // UP
 IO_PORT "spare[2]" PULL_MODE=UP IO_TYPE=LVCMOS33;
-IO_LOC "spare[3]" 31;
+IO_LOC "spare[3]" 31;                               // RIGHT
 IO_PORT "spare[3]" PULL_MODE=UP IO_TYPE=LVCMOS33;
-IO_LOC "spare[4]" 49;
+IO_LOC "spare[4]" 49;                               // LEFT
 IO_PORT "spare[4]" PULL_MODE=UP IO_TYPE=LVCMOS33;
-IO_LOC "spare[5]" 52;
+IO_LOC "spare[5]" 52;                               // BTN2
 IO_PORT "spare[5]" PULL_MODE=UP IO_TYPE=LVCMOS33;
 
 // connection to the external BL616/M0S
